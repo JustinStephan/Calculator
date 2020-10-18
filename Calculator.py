@@ -2,13 +2,26 @@ import tkinter as tk
 
 window = tk.Tk()
 
+numStack = ''
+equation = ''
 def buttonPress(button):
-    newText = button
+    global numStack
+    global equation
     if button == 'C':
-        newText = ''
-    
+        numStack, newText, equation = '', '', ''
+    if button.isnumeric():
+        numStack = numStack + button
+    if button == '-' or button =='+' or button =='*' or button =='/':
+        equation = equation + numStack + button
+        numStack = ''
+    if button == '=':
+        equation = equation + numStack
+        numStack = str(eval(equation))
+        
+        
+    newText = numStack    
     entryText.set(newText)
-    print(button)
+    
 
 def makeButtons(buttons,row, column):
     r = row
@@ -24,15 +37,16 @@ def makeButtons(buttons,row, column):
 def updateEntry(entry):
     e = 'placeholder'
 
+
 entryText = tk.StringVar()
 entry = tk.Entry(window, textvariable = entryText).grid(row = 0, column = 0, rowspan = 2, columnspan = 5)
-column1 = ['(','7','4','1','+/-']
+column1 = ['','7','4','1','+/-']
 makeButtons(column1,2,0)
 
-column2 = [')','8','5','2','0']
+column2 = ['','8','5','2','0']
 makeButtons(column2,2,1)
 
-column3 = ['C','9','6','3','.']
+column3 = ['C','9','6','3','']
 makeButtons(column3,2,2)
 
 column4 = ['/','x','-','+','=']
