@@ -6,17 +6,25 @@ root.title('Calculator')
 
 numStack = ''
 equation = ''
+answer = False
 def buttonPress(button):
     global numStack
     global equation
+    global answer 
 
     if button == 'C':
+        answer = False
         numStack, newText, equation = '', '', ''
 
-    if button.isnumeric():
+    if button.isnumeric() or button == '.':
+        if answer is True:
+            print ('huge dump')
+            numStack = ''
+            answer = False
         numStack = numStack + button
 
     if button == '-' or button =='+' or button =='x' or button =='/':
+        answer = False
         if button == 'x':
             button = '*'
         equation = equation + numStack + button
@@ -28,17 +36,19 @@ def buttonPress(button):
         equation = ''
         if float(numStack) == int(float(numStack)):
             numStack = str(int(float(numStack)))
-        
+        answer = True
+
     if button == '+/-':
+        answer = False
         if numStack != '':
             if '-' in numStack:
                 numStack = numStack.replace('-','')
             else:
                 numStack = '-' + numStack
-    
-    newText = numStack    
+
+    newText = numStack
     entryText.set(newText)
-    numstack = ''
+    
     
 
 def makeButtons(buttons,row, column):
@@ -62,7 +72,7 @@ entry = tk.Entry(root, textvariable = entryText, width=17, font = ('helvetica', 
 
 column1 = ['','7','4','1','+/-']
 column2 = ['','8','5','2','0']
-column3 = ['C','9','6','3','']
+column3 = ['C','9','6','3','.']
 column4 = ['/','x','-','+','=']
 
 
