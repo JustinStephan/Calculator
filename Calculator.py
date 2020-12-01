@@ -1,80 +1,84 @@
 import tkinter as tk
 
-numStack = ''
-equation = ''
-answer = False
-def buttonPress(button):
-    global numStack
-    global equation
-    global answer 
 
-    if button == 'C':
-        answer = False
-        numStack, newText, equation = '', '', ''
 
-    if button.isnumeric() or button == '.':
-        if answer is True:
-            numStack = ''
-            answer = False
-        numStack = numStack + button
 
-    if button == '-' or button =='+' or button =='x' or button =='/':
-        answer = False
-        if button == 'x':
-            button = '*'
-        equation = equation + numStack + button
-        numStack = ''
+class Calculator:
+    numStack = ''
+    equation = ''
+    answer = False
 
-    if button == '=':
-        equation = equation + numStack
-        numStack = str(eval(equation))
-        equation = ''
-        if float(numStack) == int(float(numStack)):
-            numStack = str(int(float(numStack)))
-        answer = True
+            
+    columns = []
+    root = tk.Tk()
+    root.title('Calculator')
+    entryText = tk.StringVar()
+    entry = tk.Entry(root, textvariable = entryText, width=17, font = ('helvetica', 24)).grid(row = 0, column = 0, rowspan = 1, columnspan = 4)
 
-    if button == '+/-':
-        answer = False
-        if numStack != '':
-            if '-' in numStack:
-                numStack = numStack.replace('-','')
-            else:
-                numStack = '-' + numStack
+    def __init__(self,columns):
+        self.columns = columns
+        self.makeButtons()
+        self.root.mainloop()
 
-    newText = numStack
-    entryText.set(newText)
+
     
-    
+    def makeButtons(self):
+        for column in range(0, len(self.columns)):
+            r = 2
+            c = column
+            for button in self.columns[column]:
+                tk.Button(
+                    self.root,
+                    font = ('helvetica', 14),
+                    text = button, 
+                    width = 7, 
+                    height = 3, 
+                    command = lambda b=button: self.buttonPress(b)).grid(row = r, column = c)
+                r +=1
 
-def makeButtons(buttons,row, column):
-    r = row
-    c = column
-    for button in buttons:
-        tk.Button(
-            root,
-            font = ('helvetica', 14),
-            text = button, 
-            width = 7, 
-            height = 3, 
-            command = lambda b=button: buttonPress(b)).grid(row = r, column = c)
-        r +=1
+    def buttonPress(self, button):
+        if button == 'C':
+            self.answer = False
+            self.numStack, self.newText, self.equation = '', '', ''
+
+        if button.isnumeric() or button == '.':
+            if self.answer is True:
+                self.numStack = ''
+                self.answer = False
+            self.numStack = self.numStack + button
+
+        if button == '-' or button =='+' or button =='x' or button =='/':
+            self.answer = False
+            if button == 'x':
+                button = '*'
+            self.equation = self.equation + self.numStack + button
+            self.numStack = ''
+
+        if button == '=':
+            self.equation = self.equation + self.numStack
+            self.numStack = str(eval(self.equation))
+            self.equation = ''
+            if float(self.numStack) == int(float(self.numStack)):
+                self.numStack = str(int(float(self.numStack)))
+            self.answer = True
+
+        if button == '+/-':
+            self.answer = False
+            if self.numStack != '':
+                if '-' in self.numStack:
+                    self.numStack = self.numStack.replace('-','')
+                else:
+                    self.numStack = '-' + self.numStack
+
+        self.newText = self.numStack
+        self.entryText.set(self.newText)
 
 
-root = tk.Tk()
-root.title('Calculator')
-entryText = tk.StringVar()
-entry = tk.Entry(root, textvariable = entryText, width=17, font = ('helvetica', 24)).grid(row = 0, column = 0, rowspan = 1, columnspan = 4)
+# def makeButtons(columns):
 
-column1 = ['','7','4','1','+/-']
-column2 = ['','8','5','2','0']
-column3 = ['C','9','6','3','.']
-column4 = ['/','x','-','+','=']
+columns = [['','7','4','1','+/-'],
+            ['','8','5','2','0'],
+            ['C','9','6','3','.'],
+            ['/','x','-','+','=']]
 
-
-makeButtons(column1,2,0)
-makeButtons(column2,2,1)
-makeButtons(column3,2,2)
-makeButtons(column4,2,3)
-
-
-root.mainloop()
+Calculator(columns)
