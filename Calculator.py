@@ -1,9 +1,5 @@
 import tkinter as tk
 
-root = tk.Tk()
-root.title('Calculator')
-
-
 numStack = ''
 equation = ''
 answer = False
@@ -18,7 +14,6 @@ def buttonPress(button):
 
     if button.isnumeric() or button == '.':
         if answer is True:
-            print ('huge dump')
             numStack = ''
             answer = False
         numStack = numStack + button
@@ -63,10 +58,10 @@ def makeButtons(buttons,row, column):
             height = 3, 
             command = lambda b=button: buttonPress(b)).grid(row = r, column = c)
         r +=1
-def updateEntry(entry):
-    e = 'placeholder'
 
 
+root = tk.Tk()
+root.title('Calculator')
 entryText = tk.StringVar()
 entry = tk.Entry(root, textvariable = entryText, width=17, font = ('helvetica', 24)).grid(row = 0, column = 0, rowspan = 1, columnspan = 4)
 
