@@ -1,27 +1,24 @@
 import tkinter as tk
 
-
-
-
 class Calculator:
     numStack = ''
     equation = ''
     answer = False
-
-            
     columns = []
-    root = tk.Tk()
-    root.title('Calculator')
-    entryText = tk.StringVar()
-    entry = tk.Entry(root, textvariable = entryText, width=17, font = ('helvetica', 24)).grid(row = 0, column = 0, rowspan = 1, columnspan = 4)
 
     def __init__(self,columns):
         self.columns = columns
-        self.makeButtons()
+        self.createWindow()
+        
         self.root.mainloop()
 
-
-    
+    def createWindow(self):
+        self.root = tk.Tk()
+        self.root.title('Calculator')
+        self.entryText = tk.StringVar()
+        self.entry = tk.Entry(self.root, textvariable = self.entryText, width=17, font = ('helvetica', 24)).grid(row = 0, column = 0, rowspan = 1, columnspan = 4)
+        self.makeButtons()   
+             
     def makeButtons(self):
         for column in range(0, len(self.columns)):
             r = 2
@@ -72,9 +69,6 @@ class Calculator:
 
         self.newText = self.numStack
         self.entryText.set(self.newText)
-
-
-# def makeButtons(columns):
 
 columns = [['','7','4','1','+/-'],
             ['','8','5','2','0'],
